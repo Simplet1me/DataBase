@@ -69,6 +69,7 @@ erDiagram
         datetime apply_time "提交时间"
         varchar apply_status "pending/agree/reject"
         datetime reply_time "审批回复时间"
+        varchar approve_stu_id FK "审批人学号"
     }
     CLUB_CREATE_APPLY {
         int create_apply_id PK "申请id"
@@ -120,17 +121,15 @@ erDiagram
         text notice_content "公告内容"
         varchar publish_stu_id FK "发布人学号"
         datetime publish_time "发布时间"
+        tinyint is_deleted "0正常1已删除"
     }
     SYSTEM_MESSAGE {
         int msg_id PK "消息id"
-        varchar receiver_type "student/teacher"
-        varchar receiver_id "接收人id(松散引用)"
+        varchar publish_stu_id FK "发布人学号(学生会成员)"
         varchar msg_title "消息标题"
         text msg_content "消息内容"
-        varchar msg_type "消息类型"
-        int biz_id "关联业务id(松散引用)"
-        tinyint is_read "0未读1已读"
-        datetime create_time "生成时间"
+        datetime publish_time "发布时间"
+        tinyint is_deleted "0正常1已删除"
     }
 
     STUDENT ||--o| STUDENT_UNION_MEMBER : "担任学生会成员"
@@ -152,10 +151,11 @@ erDiagram
     TEACHER o|--o{ CLUB_ACTIVITY : "审批活动"
     CLUB ||--o{ CLUB_NOTICE : "发布公告"
     STUDENT ||--o{ CLUB_NOTICE : "公告发布人"
+    STUDENT ||--o{ SYSTEM_MESSAGE : "发布系统消息"
 ```
 
 > 总图说明：
-> 1. SYSTEM_MESSAGE 的 receiver_id / biz_id 为松散引用（接收者可能是学生或教师，故未建物理外键），由 receiver_type 区分接收者类型；
+> 1. SYSTEM_MESSAGE 由学生会成员（publish_stu_id → student）手动编辑发布，面向全体用户（学生/教师）可见，无逐人接收记录与已读状态；
 > 2. CLUB_MEMBER 的 is_active 为生成列（在社为1、退社为NULL），配合唯一索引 uk_club_stu（同社团唯一在社）与 uk_stu_active（学生全库唯一在社，即单社团归属）；
 > 3. 同一实体对之间的多条外键（如 STUDENT—CLUB_MEMBER 的 stu_id 与 operate_stu_id）在图中合并为一条联系线，精确基数见第 4 节联系与基数说明表。
 
@@ -244,6 +244,7 @@ erDiagram
         datetime apply_time "提交时间"
         varchar apply_status "pending/agree/reject"
         datetime reply_time "审批回复时间"
+        varchar approve_stu_id FK "审批人学号"
     }
     CLUB_CREATE_APPLY {
         int create_apply_id PK "申请id"
@@ -291,7 +292,7 @@ erDiagram
     STUDENT ||--o{ CLUB_DISSOLVE_APPLY : "发起/学生会审批"
 ```
 
-> 说明：本模块覆盖需求第 5 章全部闭环流程——建团双审批通过后由触发器 trg_club_create_finalize 创建社团并录入 5 名发起人；入社审批由 trg_join_apply_audit 联动；解散由 sp_dissolve_club 在事务内按外键依赖顺序整体删除。
+> 说明：本模块覆盖需求第 5 章全部闭环流程——建团双审批通过后由后端事务调用存储过程 sp_create_club 创建社团并录入 5 名发起人；入社审批由 trg_join_apply_audit 联动；解散申请提交与解散执行分别由 sp_submit_dissolve_apply、sp_dissolve_club 处理。
 
 ### 2.3 模块 C：活动、公告与消息通知
 
@@ -329,26 +330,25 @@ erDiagram
         text notice_content "公告内容"
         varchar publish_stu_id FK "发布人学号"
         datetime publish_time "发布时间"
+        tinyint is_deleted "0正常1已删除"
     }
     SYSTEM_MESSAGE {
         int msg_id PK "消息id"
-        varchar receiver_type "student/teacher"
-        varchar receiver_id "接收人id(松散引用)"
+        varchar publish_stu_id FK "发布人学号(学生会成员)"
         varchar msg_title "消息标题"
         text msg_content "消息内容"
-        varchar msg_type "join_apply/club_create/club_dissolve/activity_audit"
-        int biz_id "关联业务id(松散引用)"
-        tinyint is_read "0未读1已读"
-        datetime create_time "生成时间"
+        datetime publish_time "发布时间"
+        tinyint is_deleted "0正常1已删除"
     }
 
     CLUB ||--o{ CLUB_ACTIVITY : "举办活动"
     TEACHER o|--o{ CLUB_ACTIVITY : "审批活动"
     CLUB ||--o{ CLUB_NOTICE : "发布公告"
     STUDENT ||--o{ CLUB_NOTICE : "公告发布人"
+    STUDENT ||--o{ SYSTEM_MESSAGE : "发布系统消息"
 ```
 
-> 说明：活动仅由所属指导教师单独审批（需求约束6）；SYSTEM_MESSAGE 不建物理外键，通过 receiver_id + receiver_type 将消息送达学生或教师，业务关联通过 biz_id 松散指向申请/活动记录。
+> 说明：活动仅由所属指导教师单独审批（需求约束6）；SYSTEM_MESSAGE 由学生会成员手动编辑发布（publish_stu_id 外键记录发布人），面向全体用户可见。
 
 ## 3 实体清单（14 张表）
 
@@ -361,13 +361,13 @@ erDiagram
 | 5 | 社团 | club | club_id | tea_id → teacher | club_name、tea_id 均唯一；解散即删除 |
 | 6 | 社团社员 | club_member | member_id | club_id → club；stu_id、operate_stu_id → student | 生成列 is_active + 唯一键：uk_club_stu（同社团唯一在社）、uk_stu_active（学生单社团） |
 | 7 | 角色变更日志 | club_member_change_log | log_id | club_id → club；stu_id、operate_stu_id → student | 晋升/降级/换届永久追溯 |
-| 8 | 入社申请 | join_apply | apply_id | club_id → club；stu_id → student | 审批同意由触发器联动入社 |
+| 8 | 入社申请 | join_apply | apply_id | club_id → club；stu_id、approve_stu_id → student | 审批同意由触发器联动入社；记录审批人 |
 | 9 | 建团申请 | club_create_apply | create_apply_id | apply_tea_id → teacher；union_audit_stu_id → student | 双审批状态 + 最终状态 |
 | 10 | 建团发起人 | club_create_apply_member | id | create_apply_id → club_create_apply；stu_id → student | 5 名发起人明细 |
 | 11 | 解散申请 | club_dissolve_apply | dissolve_apply_id | club_id → club；apply_stu_id、union_audit_stu_id → student | 双审批，通过后由 sp_dissolve_club 执行删除 |
 | 12 | 社团活动 | club_activity | act_id | club_id → club；audit_tea_id → teacher | 仅教师单审，无学生会环节 |
-| 13 | 社团公告 | club_notice | notice_id | club_id → club；publish_stu_id → student | 管理层发布，记录发布人 |
-| 14 | 系统消息 | system_message | msg_id | —（receiver_id / biz_id 松散引用） | 按 receiver_type 区分学生/教师接收 |
+| 13 | 社团公告 | club_notice | notice_id | club_id → club；publish_stu_id → student | 管理层发布/编辑，删除为软删除，记录发布人 |
+| 14 | 系统消息 | system_message | msg_id | publish_stu_id → student | 学生会成员手动发布/编辑，删除为软删除，面向全体用户可见 |
 
 ## 4 联系与基数说明
 
@@ -383,6 +383,7 @@ erDiagram
 | 学生—角色变更日志 | log.stu_id（变更对象）、log.operate_stu_id（操作人） | 学生 1 : 日志 0..n | — |
 | 社团—入社申请 | join_apply.club_id | 社团 1 : 申请 0..n | — |
 | 学生—入社申请 | join_apply.stu_id | 学生 1 : 申请 0..n | 防重复提交由 sp_submit_join_apply 校验 |
+| 学生—入社申请（审批） | join_apply.approve_stu_id | 学生 0..1 : 申请 0..n | 记录审批人（正/副社长），可空 |
 | 教师—建团申请 | apply.apply_tea_id | 教师 1 : 申请 0..n | 仅未绑定社团的教师可被选择（代码校验） |
 | 学生—建团申请（审批） | apply.union_audit_stu_id | 学生 0..1 : 申请 0..n | 可空（学生会尚未审批时） |
 | 建团申请—发起人 | member.create_apply_id | 申请 1 : 发起人 0..n | 5 人建团（人数由代码校验） |
@@ -394,31 +395,4 @@ erDiagram
 | 教师—活动（审批） | activity.audit_tea_id | 教师 0..1 : 活动 0..n | 可空（尚未审批时） |
 | 社团—公告 | notice.club_id | 社团 1 : 公告 0..n | — |
 | 学生—公告（发布） | notice.publish_stu_id | 学生 1 : 公告 0..n | 记录发布人、发布时间 |
-
-## 5 图片导出方式（手动操作步骤）
-
-本文件共 4 张图：总 ER 图 + 3 张模块 ER 图，导出时依次对应 ER图-1 ~ ER图-4。
-
-### 方式一：VS Code 内置预览（最快）
-
-打开本文件 → 点击右上角"打开预览"图标（或按 `Ctrl+Shift+V`），Mermaid 图即自动渲染，可缩放后直接截图使用。
-
-### 方式二：mermaid-cli 批量导出 SVG/PNG（推荐，适合插入课程设计报告）
-
-1. 安装（需 Node 环境，一次性，下载较慢请耐心等待）：
-   ```
-   npm install -g @mermaid-js/mermaid-cli
-   ```
-2. 目录中已备好 puppeteer-config.json（指向本机 Edge），可避免 mermaid-cli 首次运行时下载 Chromium；如误删可重建，内容为：
-   ```json
-   {"executablePath":"C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"}
-   ```
-3. 在 f:\Code\DataBase 目录执行导出：
-   ```
-   mmdc -p puppeteer-config.json -i ER图.md -o ER图.svg
-   ```
-   得到 ER图-1.svg ~ ER图-4.svg；将 -o 后缀改为 .png 即导出 PNG 格式。
-
-### 方式三：在线 mermaid.live 逐张导出
-
-打开 https://mermaid.live ，将本文档中各张图的 mermaid 代码块内容粘贴到左侧编辑器，右侧即时渲染，可逐张导出 PNG/SVG。
+| 学生—系统消息（发布） | system_message.publish_stu_id | 学生 1 : 消息 0..n | 仅学生会成员可发布（代码校验），全员可见 |

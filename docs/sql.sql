@@ -10,7 +10,7 @@ CREATE TABLE student (
     stu_gender CHAR(2) COMMENT '性别 男/女',
     stu_class VARCHAR(30) COMMENT '班级',
     stu_phone VARCHAR(11) COMMENT '联系电话',
-    stu_pwd VARCHAR(64) COMMENT '登录密码(SHA256哈希值)'
+    stu_pwd VARCHAR(64) NOT NULL COMMENT '登录密码(SHA256哈希值)'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='学生信息表';
 
 -- 2.教师表 teacher
@@ -19,7 +19,7 @@ CREATE TABLE teacher (
     tea_id VARCHAR(20) PRIMARY KEY COMMENT '教师工号',
     tea_name VARCHAR(20) NOT NULL COMMENT '教师姓名',
     tea_phone VARCHAR(11) COMMENT '联系电话',
-    tea_pwd VARCHAR(64) COMMENT '登录密码(SHA256哈希值)'
+    tea_pwd VARCHAR(64) NOT NULL COMMENT '登录密码(SHA256哈希值)'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='教师信息表';
 
 -- 3.学生会管理部门成员表(仅保存当前有效成员)
@@ -103,9 +103,11 @@ CREATE TABLE join_apply (
     apply_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '提交申请时间',
     apply_status VARCHAR(20) NOT NULL DEFAULT 'pending' COMMENT 'pending待审批 agree同意 reject拒绝',
     reply_time DATETIME NULL COMMENT '审批回复时间',
+    approve_stu_id VARCHAR(20) NULL COMMENT '审批人学号（正/副社长）',
     KEY idx_club_status (club_id, apply_status),
     FOREIGN KEY (club_id) REFERENCES club(club_id) ON DELETE RESTRICT,
-    FOREIGN KEY (stu_id) REFERENCES student(stu_id) ON DELETE RESTRICT
+    FOREIGN KEY (stu_id) REFERENCES student(stu_id) ON DELETE RESTRICT,
+    FOREIGN KEY (approve_stu_id) REFERENCES student(stu_id) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='入社申请表';
 
 -- 8.社团创建申请表 club_create_apply
@@ -182,21 +184,19 @@ CREATE TABLE club_notice (
     notice_content TEXT COMMENT '公告内容',
     publish_stu_id VARCHAR(20) NOT NULL COMMENT '发布人学号',
     publish_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '发布时间',
+    is_deleted TINYINT NOT NULL DEFAULT 0 COMMENT '0正常 1已删除(软删除)',
     FOREIGN KEY (club_id) REFERENCES club(club_id) ON DELETE RESTRICT,
     FOREIGN KEY (publish_stu_id) REFERENCES student(stu_id) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='社团公告表';
 
--- 12.系统消息通知表 system_message【优化：增加biz_id业务id】
+-- 12.系统消息表 system_message【学生会手动发布 全员可见】
 DROP TABLE IF EXISTS system_message;
 CREATE TABLE system_message (
     msg_id INT AUTO_INCREMENT PRIMARY KEY COMMENT '消息id',
-    receiver_type VARCHAR(20) NOT NULL COMMENT '接收者类型 student/teacher',
-    receiver_id VARCHAR(20) NOT NULL COMMENT '接收人id(学号/工号)',
+    publish_stu_id VARCHAR(20) NOT NULL COMMENT '发布人学号（学生会成员）',
     msg_title VARCHAR(100) NOT NULL COMMENT '消息标题',
     msg_content TEXT COMMENT '消息内容',
-    msg_type VARCHAR(30) NOT NULL COMMENT '消息类型 join_apply club_create club_dissolve activity_audit',
-    biz_id INT NULL COMMENT '关联业务主键id',
-    is_read TINYINT NOT NULL DEFAULT 0 COMMENT '0未读 1已读',
-    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '消息生成时间',
-    KEY idx_receiver_read (receiver_type, receiver_id, is_read)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统消息通知表';
+    publish_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '发布时间',
+    is_deleted TINYINT NOT NULL DEFAULT 0 COMMENT '0正常 1已删除(软删除)',
+    FOREIGN KEY (publish_stu_id) REFERENCES student(stu_id) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统消息表（学生会发布 全员可见）';
