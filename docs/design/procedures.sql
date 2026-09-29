@@ -31,18 +31,24 @@ CREATE PROCEDURE sp_submit_join_apply(
 )
 BEGIN
     -- 约束2：学生不可同时加入多个社团
-    IF EXISTS (SELECT 1 FROM club_member
-               WHERE stu_id = p_stu_id AND leave_time IS NULL) THEN
+    IF EXISTS (SELECT 1
+               FROM club_member
+               WHERE stu_id = p_stu_id
+                 AND leave_time IS NULL) THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = '您已加入社团，不可再提交入社申请';
     END IF;
     -- 约束9（评审决策 A1）：同一学生同时只能有一个待审批入社申请
-    IF EXISTS (SELECT 1 FROM join_apply
-               WHERE stu_id = p_stu_id AND apply_status = 'pending') THEN
+    IF EXISTS (SELECT 1
+               FROM join_apply
+               WHERE stu_id = p_stu_id
+                 AND apply_status = 'pending') THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = '您已有待审批的入社申请，请等待审批结果后再提交';
     END IF;
     -- 约束12（评审决策 B2）：目标社团解散申请待审批期间暂停入社
-    IF EXISTS (SELECT 1 FROM club_dissolve_apply
-               WHERE club_id = p_club_id AND final_status = 'pending') THEN
+    IF EXISTS (SELECT 1
+               FROM club_dissolve_apply
+               WHERE club_id = p_club_id
+                 AND final_status = 'pending') THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = '该社团正在解散审批中，暂停入社申请';
     END IF;
     INSERT INTO join_apply (club_id, stu_id)
@@ -70,17 +76,23 @@ BEGIN
     DECLARE v_op_role VARCHAR(20);
 
     -- 目标学生必须为本社团在职社员
-    SELECT member_role INTO v_old_role
+    SELECT member_role
+    INTO v_old_role
     FROM club_member
-    WHERE club_id = p_club_id AND stu_id = p_stu_id AND leave_time IS NULL;
+    WHERE club_id = p_club_id
+      AND stu_id = p_stu_id
+      AND leave_time IS NULL;
     IF v_old_role IS NULL THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = '目标学生不是本社团在职社员';
     END IF;
 
     -- 操作人必须是本社团在职管理层（正/副社长，评审决策 B4 平权）
-    SELECT member_role INTO v_op_role
+    SELECT member_role
+    INTO v_op_role
     FROM club_member
-    WHERE club_id = p_club_id AND stu_id = p_operate_stu_id AND leave_time IS NULL;
+    WHERE club_id = p_club_id
+      AND stu_id = p_operate_stu_id
+      AND leave_time IS NULL;
     IF v_op_role IS NULL OR v_op_role NOT IN ('president', 'vice_president') THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = '操作人无社员权限管理权限';
     END IF;
@@ -89,7 +101,9 @@ BEGIN
         -- 更新角色（触发器负责 1正2副 数量校验，违规即回滚）
         UPDATE club_member
         SET member_role = p_new_role
-        WHERE club_id = p_club_id AND stu_id = p_stu_id AND leave_time IS NULL;
+        WHERE club_id = p_club_id
+          AND stu_id = p_stu_id
+          AND leave_time IS NULL;
         -- 写入角色变更日志（永久追溯）
         INSERT INTO club_member_change_log
             (club_id, stu_id, old_role, new_role, operate_stu_id)
@@ -113,16 +127,21 @@ BEGIN
     DECLARE v_role VARCHAR(20);
 
     -- 仅社团社长可发起解散申请
-    SELECT member_role INTO v_role
+    SELECT member_role
+    INTO v_role
     FROM club_member
-    WHERE club_id = p_club_id AND stu_id = p_stu_id AND leave_time IS NULL;
+    WHERE club_id = p_club_id
+      AND stu_id = p_stu_id
+      AND leave_time IS NULL;
     IF v_role IS NULL OR v_role <> 'president' THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = '仅社团社长可发起解散申请';
     END IF;
 
     -- 评审决策 A3：同一社团同一时间只能存在一条待审批解散申请
-    IF EXISTS (SELECT 1 FROM club_dissolve_apply
-               WHERE club_id = p_club_id AND final_status = 'pending') THEN
+    IF EXISTS (SELECT 1
+               FROM club_dissolve_apply
+               WHERE club_id = p_club_id
+                 AND final_status = 'pending') THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = '该社团已有待审批的解散申请，不可重复发起';
     END IF;
 
@@ -159,20 +178,25 @@ BEGIN
     DECLARE v_rank INT DEFAULT 0;
     DECLARE v_done INT DEFAULT 0;
     DECLARE cur CURSOR FOR
-        SELECT stu_id FROM club_create_apply_member
+        SELECT stu_id
+        FROM club_create_apply_member
         WHERE create_apply_id = p_create_apply_id
         ORDER BY id;
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET v_done = 1;
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
-    BEGIN
-        ROLLBACK;
-        RESIGNAL;
-    END;
+        BEGIN
+            ROLLBACK;
+            RESIGNAL;
+        END;
 
-    SELECT club_name, club_desc, apply_tea_id,
-           union_audit_status, tea_audit_status, final_status
+    SELECT club_name,
+           club_desc,
+           apply_tea_id,
+           union_audit_status,
+           tea_audit_status,
+           final_status
     INTO v_club_name, v_club_desc, v_tea_id,
-         v_union_status, v_tea_status, v_final_status
+        v_union_status, v_tea_status, v_final_status
     FROM club_create_apply
     WHERE create_apply_id = p_create_apply_id;
     IF v_club_name IS NULL THEN
@@ -187,33 +211,34 @@ BEGIN
     END IF;
 
     START TRANSACTION;
-        -- 创建社团（uk_club_name / uk_tea_id 冲突时整体回滚）
-        INSERT INTO club (club_name, club_desc, club_create_time, tea_id)
-        VALUES (v_club_name, v_club_desc, NOW(), v_tea_id);
-        SET v_club_id = LAST_INSERT_ID();
+    -- 创建社团（uk_club_name / uk_tea_id 冲突时整体回滚）
+    INSERT INTO club (club_name, club_desc, club_create_time, tea_id)
+    VALUES (v_club_name, v_club_desc, NOW(), v_tea_id);
+    SET v_club_id = LAST_INSERT_ID();
 
-        -- 5名发起人入社（uk_stu_active 冲突时整体回滚）
-        OPEN cur;
-        member_loop: LOOP
-            FETCH cur INTO v_stu_id;
-            IF v_done = 1 THEN
-                LEAVE member_loop;
-            END IF;
-            SET v_rank = v_rank + 1;
-            SET v_role = CASE
-                WHEN v_rank = 1 THEN 'president'
-                WHEN v_rank <= 3 THEN 'vice_president'
-                ELSE 'member'
+    -- 5名发起人入社（uk_stu_active 冲突时整体回滚）
+    OPEN cur;
+    member_loop:
+    LOOP
+        FETCH cur INTO v_stu_id;
+        IF v_done = 1 THEN
+            LEAVE member_loop;
+        END IF;
+        SET v_rank = v_rank + 1;
+        SET v_role = CASE
+                         WHEN v_rank = 1 THEN 'president'
+                         WHEN v_rank <= 3 THEN 'vice_president'
+                         ELSE 'member'
             END;
-            INSERT INTO club_member (club_id, stu_id, member_role)
-            VALUES (v_club_id, v_stu_id, v_role);
-        END LOOP;
-        CLOSE cur;
+        INSERT INTO club_member (club_id, stu_id, member_role)
+        VALUES (v_club_id, v_stu_id, v_role);
+    END LOOP;
+    CLOSE cur;
 
-        -- 置最终状态（无触发器联动，状态更新由本过程显式控制）
-        UPDATE club_create_apply
-        SET final_status = 'success'
-        WHERE create_apply_id = p_create_apply_id;
+    -- 置最终状态（无触发器联动，状态更新由本过程显式控制）
+    UPDATE club_create_apply
+    SET final_status = 'success'
+    WHERE create_apply_id = p_create_apply_id;
     COMMIT;
 END$$
 DELIMITER ;
@@ -234,28 +259,30 @@ CREATE PROCEDURE sp_dissolve_club(
 BEGIN
     DECLARE v_club_id INT;
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
-    BEGIN
-        ROLLBACK;
-        RESIGNAL;
-    END;
+        BEGIN
+            ROLLBACK;
+            RESIGNAL;
+        END;
 
     -- 校验解散申请已双审批通过
-    SELECT club_id INTO v_club_id
+    SELECT club_id
+    INTO v_club_id
     FROM club_dissolve_apply
-    WHERE dissolve_apply_id = p_dissolve_apply_id AND final_status = 'success';
+    WHERE dissolve_apply_id = p_dissolve_apply_id
+      AND final_status = 'success';
     IF v_club_id IS NULL THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = '解散申请不存在或未通过双审批';
     END IF;
 
     START TRANSACTION;
-        -- 按外键依赖顺序删除（RESTRICT 外键下必须遵守此顺序）
-        DELETE FROM join_apply WHERE club_id = v_club_id;
-        DELETE FROM club_activity WHERE club_id = v_club_id;
-        DELETE FROM club_notice WHERE club_id = v_club_id;
-        DELETE FROM club_member_change_log WHERE club_id = v_club_id;
-        DELETE FROM club_member WHERE club_id = v_club_id;
-        DELETE FROM club_dissolve_apply WHERE club_id = v_club_id;
-        DELETE FROM club WHERE club_id = v_club_id;
+    -- 按外键依赖顺序删除（RESTRICT 外键下必须遵守此顺序）
+    DELETE FROM join_apply WHERE club_id = v_club_id;
+    DELETE FROM club_activity WHERE club_id = v_club_id;
+    DELETE FROM club_notice WHERE club_id = v_club_id;
+    DELETE FROM club_member_change_log WHERE club_id = v_club_id;
+    DELETE FROM club_member WHERE club_id = v_club_id;
+    DELETE FROM club_dissolve_apply WHERE club_id = v_club_id;
+    DELETE FROM club WHERE club_id = v_club_id;
     COMMIT;
 END$$
 DELIMITER ;

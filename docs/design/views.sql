@@ -20,23 +20,35 @@ USE club_manage;
 -- ------------------------------------------------------------
 DROP VIEW IF EXISTS v_club_info;
 CREATE VIEW v_club_info AS
-SELECT c.club_id, c.club_name, c.club_desc, c.club_create_time, c.tea_id,
-       t.tea_name AS tea_name,
-       (SELECT COUNT(*) FROM club_member m
-        WHERE m.club_id = c.club_id AND m.leave_time IS NULL) AS member_count
+SELECT c.club_id,
+       c.club_name,
+       c.club_desc,
+       c.club_create_time,
+       c.tea_id,
+       t.tea_name                   AS tea_name,
+       (SELECT COUNT(*)
+        FROM club_member m
+        WHERE m.club_id = c.club_id
+          AND m.leave_time IS NULL) AS member_count
 FROM club c
-LEFT JOIN teacher t ON c.tea_id = t.tea_id;
+         LEFT JOIN teacher t ON c.tea_id = t.tea_id;
 
 -- ------------------------------------------------------------
 -- 2. 待审批入社申请视图：正/副社长审批台查询
 -- ------------------------------------------------------------
 DROP VIEW IF EXISTS v_join_apply_pending;
 CREATE VIEW v_join_apply_pending AS
-SELECT a.apply_id, a.club_id, c.club_name, a.stu_id,
-       s.stu_name, s.stu_class, s.stu_phone, a.apply_time
+SELECT a.apply_id,
+       a.club_id,
+       c.club_name,
+       a.stu_id,
+       s.stu_name,
+       s.stu_class,
+       s.stu_phone,
+       a.apply_time
 FROM join_apply a
-JOIN club c ON a.club_id = c.club_id
-JOIN student s ON a.stu_id = s.stu_id
+         JOIN club c ON a.club_id = c.club_id
+         JOIN student s ON a.stu_id = s.stu_id
 WHERE a.apply_status = 'pending';
 
 -- ------------------------------------------------------------
@@ -44,20 +56,35 @@ WHERE a.apply_status = 'pending';
 -- ------------------------------------------------------------
 DROP VIEW IF EXISTS v_stu_club_record;
 CREATE VIEW v_stu_club_record AS
-SELECT m.member_id, m.stu_id, s.stu_name, m.club_id, c.club_name,
-       m.member_role, m.join_time, m.leave_time, m.leave_type, m.operate_stu_id
+SELECT m.member_id,
+       m.stu_id,
+       s.stu_name,
+       m.club_id,
+       c.club_name,
+       m.member_role,
+       m.join_time,
+       m.leave_time,
+       m.leave_type,
+       m.operate_stu_id
 FROM club_member m
-JOIN student s ON m.stu_id = s.stu_id
-JOIN club c ON m.club_id = c.club_id;
+         JOIN student s ON m.stu_id = s.stu_id
+         JOIN club c ON m.club_id = c.club_id;
 
 -- ------------------------------------------------------------
 -- 4. 社团在职社员视图：管理层社员信息管理（需求4.2.1）
 -- ------------------------------------------------------------
 DROP VIEW IF EXISTS v_club_member_detail;
 CREATE VIEW v_club_member_detail AS
-SELECT m.member_id, m.club_id, c.club_name, m.stu_id,
-       s.stu_name, s.stu_class, s.stu_phone, m.member_role, m.join_time
+SELECT m.member_id,
+       m.club_id,
+       c.club_name,
+       m.stu_id,
+       s.stu_name,
+       s.stu_class,
+       s.stu_phone,
+       m.member_role,
+       m.join_time
 FROM club_member m
-JOIN student s ON m.stu_id = s.stu_id
-JOIN club c ON m.club_id = c.club_id
+         JOIN student s ON m.stu_id = s.stu_id
+         JOIN club c ON m.club_id = c.club_id
 WHERE m.leave_time IS NULL;

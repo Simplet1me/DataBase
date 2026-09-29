@@ -20,19 +20,26 @@ USE club_manage;
 DROP TRIGGER IF EXISTS trg_club_member_role_insert;
 DELIMITER $$
 CREATE TRIGGER trg_club_member_role_insert
-BEFORE INSERT ON club_member
-FOR EACH ROW
+    BEFORE INSERT
+    ON club_member
+    FOR EACH ROW
 BEGIN
     IF NEW.member_role = 'president' THEN
-        IF EXISTS (SELECT 1 FROM club_member
-                   WHERE club_id = NEW.club_id AND member_role = 'president'
-                     AND leave_time IS NULL AND member_id <> NEW.member_id) THEN
+        IF EXISTS (SELECT 1
+                   FROM club_member
+                   WHERE club_id = NEW.club_id
+                     AND member_role = 'president'
+                     AND leave_time IS NULL
+                     AND member_id <> NEW.member_id) THEN
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = '该社团已存在在职正社长，不可重复设置';
         END IF;
     ELSEIF NEW.member_role = 'vice_president' THEN
-        IF (SELECT COUNT(*) FROM club_member
-            WHERE club_id = NEW.club_id AND member_role = 'vice_president'
-              AND leave_time IS NULL AND member_id <> NEW.member_id) >= 2 THEN
+        IF (SELECT COUNT(*)
+            FROM club_member
+            WHERE club_id = NEW.club_id
+              AND member_role = 'vice_president'
+              AND leave_time IS NULL
+              AND member_id <> NEW.member_id) >= 2 THEN
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = '该社团在职副社长已达2名上限';
         END IF;
     END IF;
@@ -47,20 +54,27 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS trg_club_member_role_update;
 DELIMITER $$
 CREATE TRIGGER trg_club_member_role_update
-BEFORE UPDATE ON club_member
-FOR EACH ROW
+    BEFORE UPDATE
+    ON club_member
+    FOR EACH ROW
 BEGIN
     IF NEW.member_role <> OLD.member_role AND NEW.leave_time IS NULL THEN
         IF NEW.member_role = 'president' THEN
-            IF EXISTS (SELECT 1 FROM club_member
-                       WHERE club_id = NEW.club_id AND member_role = 'president'
-                         AND leave_time IS NULL AND member_id <> NEW.member_id) THEN
+            IF EXISTS (SELECT 1
+                       FROM club_member
+                       WHERE club_id = NEW.club_id
+                         AND member_role = 'president'
+                         AND leave_time IS NULL
+                         AND member_id <> NEW.member_id) THEN
                 SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = '该社团已存在在职正社长，不可重复设置';
             END IF;
         ELSEIF NEW.member_role = 'vice_president' THEN
-            IF (SELECT COUNT(*) FROM club_member
-                WHERE club_id = NEW.club_id AND member_role = 'vice_president'
-                  AND leave_time IS NULL AND member_id <> NEW.member_id) >= 2 THEN
+            IF (SELECT COUNT(*)
+                FROM club_member
+                WHERE club_id = NEW.club_id
+                  AND member_role = 'vice_president'
+                  AND leave_time IS NULL
+                  AND member_id <> NEW.member_id) >= 2 THEN
                 SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = '该社团在职副社长已达2名上限';
             END IF;
         END IF;
@@ -79,8 +93,9 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS trg_join_apply_audit;
 DELIMITER $$
 CREATE TRIGGER trg_join_apply_audit
-AFTER UPDATE ON join_apply
-FOR EACH ROW
+    AFTER UPDATE
+    ON join_apply
+    FOR EACH ROW
 BEGIN
     -- 仅处理 pending → agree 的审批动作，避免重复触发
     IF OLD.apply_status = 'pending' AND NEW.apply_status = 'agree' THEN
