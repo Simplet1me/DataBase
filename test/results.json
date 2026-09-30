@@ -1,0 +1,1323 @@
+{
+  "date": "2026-09-29T13:04:27.962Z",
+  "results": [
+    {
+      "id": 1,
+      "title": "学生登录与复合身份",
+      "status": "通过",
+      "ms": 137
+    },
+    {
+      "id": 2,
+      "title": "教师登录",
+      "status": "通过",
+      "ms": 99
+    },
+    {
+      "id": 3,
+      "title": "错误密码",
+      "status": "通过",
+      "ms": 81
+    },
+    {
+      "id": 4,
+      "title": "社团列表",
+      "status": "通过",
+      "ms": 80
+    },
+    {
+      "id": 5,
+      "title": "解散后不可见",
+      "status": "通过",
+      "ms": 184
+    },
+    {
+      "id": 6,
+      "title": "正常提交入社",
+      "status": "通过",
+      "ms": 169
+    },
+    {
+      "id": 7,
+      "title": "已入社拒绝",
+      "status": "通过",
+      "ms": 558
+    },
+    {
+      "id": 8,
+      "title": "在途申请拒绝",
+      "status": "通过",
+      "ms": 124
+    },
+    {
+      "id": 9,
+      "title": "解散冻结入社",
+      "status": "通过",
+      "ms": 115
+    },
+    {
+      "id": 10,
+      "title": "同意自动入社与审批人",
+      "status": "通过",
+      "ms": 243
+    },
+    {
+      "id": 11,
+      "title": "拒绝不入社",
+      "status": "通过",
+      "ms": 174
+    },
+    {
+      "id": 12,
+      "title": "同意冲突回滚",
+      "status": "通过",
+      "ms": 334
+    },
+    {
+      "id": 13,
+      "title": "副社长审批平权",
+      "status": "通过",
+      "ms": 219
+    },
+    {
+      "id": 14,
+      "title": "主动退社留痕",
+      "status": "通过",
+      "ms": 204
+    },
+    {
+      "id": 15,
+      "title": "踢出留痕",
+      "status": "通过",
+      "ms": 148
+    },
+    {
+      "id": 16,
+      "title": "不能踢出社长",
+      "status": "通过",
+      "ms": 71
+    },
+    {
+      "id": 17,
+      "title": "晋升副社长及日志",
+      "status": "通过",
+      "ms": 160
+    },
+    {
+      "id": 18,
+      "title": "第三名副社长被拦截",
+      "status": "通过",
+      "ms": 182
+    },
+    {
+      "id": 19,
+      "title": "双社长触发器拦截",
+      "status": "通过",
+      "ms": 84
+    },
+    {
+      "id": 20,
+      "title": "换届原子成功",
+      "status": "通过",
+      "ms": 326
+    },
+    {
+      "id": 21,
+      "title": "漏降级整笔回滚",
+      "status": "通过",
+      "ms": 236
+    },
+    {
+      "id": 22,
+      "title": "换届目标非社员",
+      "status": "通过",
+      "ms": 135
+    },
+    {
+      "id": 23,
+      "title": "五人建团完整闭环",
+      "status": "通过",
+      "ms": 345
+    },
+    {
+      "id": 24,
+      "title": "学生会驳回建团",
+      "status": "通过",
+      "ms": 180
+    },
+    {
+      "id": 25,
+      "title": "教师驳回建团",
+      "status": "通过",
+      "ms": 174
+    },
+    {
+      "id": 26,
+      "title": "重名终审回滚",
+      "status": "通过",
+      "ms": 283
+    },
+    {
+      "id": 27,
+      "title": "发起人入他社后终审回滚",
+      "status": "通过",
+      "ms": 429
+    },
+    {
+      "id": 28,
+      "title": "教师被抢占回滚",
+      "status": "通过",
+      "ms": 336
+    },
+    {
+      "id": 29,
+      "title": "四人建团拒绝",
+      "status": "通过",
+      "ms": 81
+    },
+    {
+      "id": 30,
+      "title": "建团发起人已有社团",
+      "status": "通过",
+      "ms": 80
+    },
+    {
+      "id": 31,
+      "title": "学生会成员平权审批",
+      "status": "通过",
+      "ms": 170
+    },
+    {
+      "id": 32,
+      "title": "活动申办",
+      "status": "通过",
+      "ms": 199
+    },
+    {
+      "id": 33,
+      "title": "解散冻结活动申办",
+      "status": "通过",
+      "ms": 122
+    },
+    {
+      "id": 34,
+      "title": "指导教师同意活动",
+      "status": "通过",
+      "ms": 182
+    },
+    {
+      "id": 35,
+      "title": "非绑定教师拒绝",
+      "status": "通过",
+      "ms": 89
+    },
+    {
+      "id": 36,
+      "title": "管理层完结活动",
+      "status": "通过",
+      "ms": 171
+    },
+    {
+      "id": 37,
+      "title": "仅社长发起解散",
+      "status": "通过",
+      "ms": 78
+    },
+    {
+      "id": 38,
+      "title": "重复解散申请",
+      "status": "通过",
+      "ms": 117
+    },
+    {
+      "id": 39,
+      "title": "解散删除并释放身份",
+      "status": "通过",
+      "ms": 637
+    },
+    {
+      "id": 40,
+      "title": "解散驳回保留社团",
+      "status": "通过",
+      "ms": 232
+    },
+    {
+      "id": 41,
+      "title": "公告发布编辑软删除",
+      "status": "通过",
+      "ms": 207
+    },
+    {
+      "id": 42,
+      "title": "消息发布身份限制",
+      "status": "通过",
+      "ms": 78
+    },
+    {
+      "id": 43,
+      "title": "系统消息软删除",
+      "status": "通过",
+      "ms": 204
+    },
+    {
+      "id": 44,
+      "title": "新增学生会成员和日志",
+      "status": "通过",
+      "ms": 240
+    },
+    {
+      "id": 45,
+      "title": "移除学生会成员和日志",
+      "status": "通过",
+      "ms": 272
+    },
+    {
+      "id": 46,
+      "title": "最后一名学生会成员保护",
+      "status": "通过",
+      "ms": 93
+    },
+    {
+      "id": 47,
+      "title": "概览视图人数准确",
+      "status": "通过",
+      "ms": 177
+    },
+    {
+      "id": 48,
+      "title": "审批台视图仅返回待审",
+      "status": "通过",
+      "ms": 92
+    },
+    {
+      "id": 49,
+      "title": "档案包含在社和历史",
+      "status": "通过",
+      "ms": 113
+    },
+    {
+      "id": 50,
+      "title": "原审批视图字段限制与替代更新验证",
+      "status": "通过",
+      "ms": 520
+    },
+    {
+      "id": 51,
+      "title": "历史建团审批双方信息",
+      "status": "通过",
+      "ms": 196
+    },
+    {
+      "id": 52,
+      "title": "外键阻止直接删除社团",
+      "status": "通过",
+      "ms": 203
+    },
+    {
+      "id": 53,
+      "title": "外键阻止删除学生",
+      "status": "通过",
+      "ms": 151
+    },
+    {
+      "id": 54,
+      "title": "解散过程幂等保护",
+      "status": "通过",
+      "ms": 278
+    },
+    {
+      "id": 55,
+      "title": "并发审批仅一次成功",
+      "status": "通过",
+      "ms": 197
+    }
+  ],
+  "extras": [
+    {
+      "id": "E1",
+      "title": "全部查询接口与实时权限",
+      "status": "通过",
+      "ms": 225
+    },
+    {
+      "id": "E2",
+      "title": "先教师后学生会同意仍完成闭环",
+      "status": "通过",
+      "ms": 415
+    },
+    {
+      "id": "E3",
+      "title": "无副社长时换届权限桥接",
+      "status": "通过",
+      "ms": 416
+    },
+    {
+      "id": "E4",
+      "title": "换届全部管理层降级",
+      "status": "通过",
+      "ms": 359
+    },
+    {
+      "id": "E5",
+      "title": "并发提交入社不产生两条在途",
+      "status": "通过",
+      "ms": 157
+    },
+    {
+      "id": "E6",
+      "title": "密码修改及输入校验",
+      "status": "通过",
+      "ms": 110
+    },
+    {
+      "id": "E7",
+      "title": "教师提前同意后的冲突恢复学生会状态",
+      "status": "通过",
+      "ms": 367
+    },
+    {
+      "id": "E8",
+      "title": "两人管理层同时降级后原副社长接任",
+      "status": "通过",
+      "ms": 340
+    },
+    {
+      "id": "E9",
+      "title": "重复审批、越权审批及活动驳回",
+      "status": "通过",
+      "ms": 158
+    }
+  ],
+  "traces": [
+    {
+      "method": "POST",
+      "route": "/auth/login",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/auth/login",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/auth/login",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/auth/login",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/auth/login",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/auth/login",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/auth/login",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/auth/login",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/auth/login",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/auth/login",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/auth/login",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/auth/login",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/auth/login",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/auth/profile",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/auth/profile",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/auth/login",
+      "code": 1001
+    },
+    {
+      "method": "GET",
+      "route": "/clubs",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/dissolve-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/union/dissolve-applies/20/audit",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/teacher/dissolve-applies/20/audit",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/clubs",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/join-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/join-applies",
+      "code": 1001
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/join-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/join-applies",
+      "code": 1001
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/dissolve-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/join-applies",
+      "code": 1001
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/join-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/join-applies/36/audit",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/join-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/join-applies/37/audit",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/join-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/join-applies/38/audit",
+      "code": 1002
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/join-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/join-applies/39/audit",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/members/my/quit",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/members/2021009/kick",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/members/2021006/kick",
+      "code": 1001
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/role-change",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/role-change",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/role-change",
+      "code": 1001
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/role-change",
+      "code": 1001
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/change-president",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/change-president",
+      "code": 1001
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/change-president",
+      "code": 1001
+    },
+    {
+      "method": "POST",
+      "route": "/create-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/union/create-applies/37/audit",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/teacher/create-applies/37/audit",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/create-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/union/create-applies/38/audit",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/create-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/teacher/create-applies/39/audit",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/create-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/union/create-applies/40/audit",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/teacher/create-applies/40/audit",
+      "code": 1002
+    },
+    {
+      "method": "POST",
+      "route": "/create-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/union/create-applies/41/audit",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/teacher/create-applies/41/audit",
+      "code": 1002
+    },
+    {
+      "method": "POST",
+      "route": "/create-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/create-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/union/create-applies/42/audit",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/teacher/create-applies/42/audit",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/union/create-applies/43/audit",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/teacher/create-applies/43/audit",
+      "code": 1002
+    },
+    {
+      "method": "POST",
+      "route": "/create-applies",
+      "code": 400
+    },
+    {
+      "method": "POST",
+      "route": "/create-applies",
+      "code": 1001
+    },
+    {
+      "method": "POST",
+      "route": "/create-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/union/create-applies/44/audit",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/activities",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/dissolve-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/activities",
+      "code": 1001
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/activities",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/teacher/activities/261/audit",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/activities",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/teacher/activities/263/audit",
+      "code": 403
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/activities",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/teacher/activities/265/audit",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/activities/265/finish",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/dissolve-applies",
+      "code": 1001
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/dissolve-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/dissolve-applies",
+      "code": 1001
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/join-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/role-change",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/dissolve-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/union/dissolve-applies/24/audit",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/teacher/dissolve-applies/24/audit",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/auth/profile",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/teacher/club",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/dissolve-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/union/dissolve-applies/25/audit",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/join-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/notices",
+      "code": 0
+    },
+    {
+      "method": "PUT",
+      "route": "/clubs/1/notices/509",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/clubs/1",
+      "code": 0
+    },
+    {
+      "method": "DELETE",
+      "route": "/clubs/1/notices/509",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/clubs/1",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/clubs/1/notices",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/messages",
+      "code": 403
+    },
+    {
+      "method": "POST",
+      "route": "/messages",
+      "code": 0
+    },
+    {
+      "method": "PUT",
+      "route": "/messages/517",
+      "code": 0
+    },
+    {
+      "method": "DELETE",
+      "route": "/messages/517",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/messages",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/union/members",
+      "code": 0
+    },
+    {
+      "method": "DELETE",
+      "route": "/union/members/2021006",
+      "code": 0
+    },
+    {
+      "method": "DELETE",
+      "route": "/union/members/2021006",
+      "code": 0
+    },
+    {
+      "method": "DELETE",
+      "route": "/union/members/2021007",
+      "code": 1001
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/join-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/join-applies/42/audit",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/clubs/my",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/join-applies",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/clubs/1/join-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/join-applies/43/audit",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/clubs/1/join-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/members/my/quit",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/join-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/join-applies/44/audit",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/members/my",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/join-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/join-applies/45/audit",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/create-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/union/create-applies/45/audit",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/teacher/create-applies/45/audit",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/union/audit-records",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/dissolve-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/union/dissolve-applies/26/audit",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/teacher/dissolve-applies/26/audit",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/union/dissolve-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/dissolve-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/union/dissolve-applies/27/audit",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/teacher/dissolve-applies/27/audit",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/join-applies",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/clubs/my",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/clubs/1/members",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/clubs/1/members/history",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/clubs/1/activities/all",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/clubs/1/dissolve-applies",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/union/member-logs",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/union/create-applies",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/union/dissolve-applies",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/union/members",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/clubs/1/activities",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/auth/personal",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/teachers/free",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/join-applies/my",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/members/my",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/members/my/role-logs",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/create-applies/my",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/teacher/create-applies",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/teacher/dissolve-applies",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/teacher/activities",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/teacher/club",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/clubs",
+      "code": 401
+    },
+    {
+      "method": "GET",
+      "route": "/clubs/1/members",
+      "code": 403
+    },
+    {
+      "method": "GET",
+      "route": "/clubs/1/activities",
+      "code": 403
+    },
+    {
+      "method": "DELETE",
+      "route": "/union/members/2021006",
+      "code": 0
+    },
+    {
+      "method": "GET",
+      "route": "/union/members",
+      "code": 403
+    },
+    {
+      "method": "GET",
+      "route": "/auth/profile",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/create-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/teacher/create-applies/46/audit",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/union/create-applies/46/audit",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/dissolve-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/teacher/dissolve-applies/28/audit",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/union/dissolve-applies/28/audit",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/role-change",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/change-president",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/change-president",
+      "code": 0
+    },
+    {
+      "method": "PUT",
+      "route": "/auth/password",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/auth/login",
+      "code": 1001
+    },
+    {
+      "method": "POST",
+      "route": "/auth/login",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/activities",
+      "code": 400
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/role-change",
+      "code": 400
+    },
+    {
+      "method": "POST",
+      "route": "/create-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/teacher/create-applies/47/audit",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/union/create-applies/47/audit",
+      "code": 1002
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/members/2021009/kick",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/change-president",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/create-applies",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/teacher/create-applies/48/audit",
+      "code": 403
+    },
+    {
+      "method": "POST",
+      "route": "/union/create-applies/48/audit",
+      "code": 403
+    },
+    {
+      "method": "POST",
+      "route": "/union/create-applies/48/audit",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/union/create-applies/48/audit",
+      "code": 404
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/activities",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/teacher/activities/294/audit",
+      "code": 0
+    },
+    {
+      "method": "POST",
+      "route": "/clubs/1/activities/294/finish",
+      "code": 404
+    },
+    {
+      "method": "GET",
+      "route": "/clubs/999999",
+      "code": 404
+    },
+    {
+      "method": "POST",
+      "route": "/union/members",
+      "code": 1002
+    }
+  ]
+}

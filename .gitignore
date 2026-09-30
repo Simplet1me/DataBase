@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+frontend/node_modules/
+frontend/dist/
+frontend/components.d.ts
+frontend/auto-imports.d.ts
+logs/
+release/

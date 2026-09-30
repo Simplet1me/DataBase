@@ -1,5 +1,20 @@
 # test 目录说明
 
+> 实现与验收已完成。复验入口：项目根目录 `node scripts/test-all.mjs`，仅重置独立测试库club_manage_test。
+
+## 已交付结果
+
+- expected-results.md / results.json：55个原用例与9个补充边界用例的实测记录。54个原例通过；第50例原要求受限，替代验证通过。
+- demo-flow.mjs / demo-results.md：12步骤端到端演示与实际结果。
+- ui-results.json / screenshots：15页真实浏览器检查、移动布局及界面截图；测试源码在frontend/test/ui.mjs。
+- java-test-results.txt：4项Java/MockMvc测试结果。
+- api-coverage.md：52个控制器方法与路径组合的实际调用覆盖。
+- database-integrity.md：四个原SQL哈希比对及数据库对象数量。
+- release-smoke.md：交付JAR与静态前端启动/代理/登录/停止检查。
+- source-manifest.md：交付文件、大小及SHA-256。
+
+原始约定保留如下。
+
 本目录存放项目的测试与演示数据（方案见 [docs/dev/05-测试文档.md](../docs/dev/05-测试文档.md)）。
 
 ## 约定

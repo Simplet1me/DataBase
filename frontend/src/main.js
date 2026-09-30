@@ -1,15 +1,13 @@
 import { createApp } from 'vue'
-import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import { createPinia } from 'pinia'
+import 'element-plus/theme-chalk/base.css'
+import 'element-plus/theme-chalk/el-message.css'
+import 'element-plus/theme-chalk/el-message-box.css'
+import 'element-plus/theme-chalk/el-loading.css'
 import App from './App.vue'
 import router from './router'
 import './style.css'
-
+// 先安装状态管理，再安装依赖登录态的路由。
 const app = createApp(App)
-
-// 全局注册 Element Plus 图标组件
-for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
-  app.component(key, component)
-}
-
-app.use(router)
-app.mount('#app')
+app.use(createPinia()).use(router).mount('#app')
+app.config.errorHandler = (error) => console.error('页面发生错误', error)

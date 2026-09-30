@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="db">
+  <!-- 全部值参数化；存储过程、视图及表结构与原设计一致。 -->
+  <select id="lastId" resultType="map">SELECT LAST_INSERT_ID() AS id</select>
+  <select id="databaseName" resultType="map">SELECT DATABASE() AS name</select>
+  <select id="getLock" resultType="map">SELECT GET_LOCK(#{name},20) AS locked</select>
+  <select id="student" resultType="map">SELECT stu_id AS id,stu_name AS name,stu_pwd AS password,stu_class,stu_phone FROM student WHERE stu_id=#{id}</select>
+  <select id="teacher" resultType="map">SELECT tea_id AS id,tea_name AS name,tea_pwd AS password FROM teacher WHERE tea_id=#{id}</select>
+  <update id="studentPassword">UPDATE student SET stu_pwd=#{password} WHERE stu_id=#{id}</update>
+  <update id="teacherPassword">UPDATE teacher SET tea_pwd=#{password} WHERE tea_id=#{id}</update>
+  <select id="activeMember" resultType="map">SELECT m.*,c.club_name FROM club_member m JOIN club c ON c.club_id=m.club_id WHERE m.stu_id=#{stuId} AND m.leave_time IS NULL</select>
+  <select id="clubs" resultType="map">SELECT * FROM v_club_info ORDER BY club_create_time DESC,club_id DESC</select>
+  <select id="club" resultType="map">SELECT * FROM v_club_info WHERE club_id=#{clubId}</select>
+  <select id="clubByName" resultType="map">SELECT club_id FROM club WHERE club_name=#{name}</select>
+  <select id="clubByTeacher" resultType="map">SELECT * FROM v_club_info WHERE tea_id=#{teaId}</select>
+  <select id="freeTeachers" resultType="map">SELECT tea_id,tea_name FROM teacher t WHERE NOT EXISTS (SELECT 1 FROM club c WHERE c.tea_id=t.tea_id) ORDER BY tea_id</select>
+  <select id="myJoins" resultType="map">SELECT a.apply_id,a.club_id,c.club_name,a.apply_time,a.apply_status,a.reply_time FROM join_apply a JOIN club c ON c.club_id=a.club_id WHERE a.stu_id=#{stuId} ORDER BY a.apply_time DESC,a.apply_id DESC</select>
+  <select id="myRecords" resultType="map">SELECT member_id,club_name,member_role,join_time,leave_time,leave_type FROM v_stu_club_record WHERE stu_id=#{stuId} ORDER BY join_time DESC,member_id DESC</select>
+  <select id="myRoleLogs" resultType="map">SELECT l.*,c.club_name,s.stu_name AS operate_name FROM club_member_change_log l JOIN club c ON c.club_id=l.club_id JOIN student s ON s.stu_id=l.operate_stu_id WHERE l.stu_id=#{stuId} ORDER BY l.log_id DESC</select>
+  <select id="memberHistory" resultType="map">SELECT * FROM v_stu_club_record WHERE club_id=#{clubId} AND leave_time IS NOT NULL ORDER BY leave_time DESC</select>
+  <select id="member" resultType="map">SELECT * FROM club_member WHERE club_id=#{clubId} AND stu_id=#{stuId} AND leave_time IS NULL</select>
+  <select id="members" resultType="map">SELECT member_id,stu_id,stu_name,stu_class,stu_phone,member_role,join_time FROM v_club_member_detail WHERE club_id=#{clubId} ORDER BY member_id</select>
+  <!-- 通过原可更新档案视图写入社员表，提供界面上的视图查询与更新闭环。 -->
+  <update id="quit">UPDATE v_stu_club_record SET leave_time=NOW(),leave_type='quit',operate_stu_id=#{stuId} WHERE stu_id=#{stuId} AND leave_time IS NULL</update>
+  <update id="kick">UPDATE club_member SET leave_time=NOW(),leave_type='kick',operate_stu_id=#{operator} WHERE club_id=#{clubId} AND stu_id=#{stuId} AND leave_time IS NULL AND member_role&lt;&gt;'president'</update>
+  <select id="leftMember" resultType="map">SELECT leave_time FROM club_member WHERE member_id=#{id}</select>
+  <select id="pendingJoins" resultType="map">SELECT apply_id,stu_id,stu_name,stu_class,stu_phone,apply_time FROM v_join_apply_pending WHERE club_id=#{clubId} ORDER BY apply_time,apply_id</select>
+  <select id="join" resultType="map">SELECT * FROM join_apply WHERE apply_id=#{id}</select>
+  <update id="auditJoin">UPDATE join_apply SET apply_status=#{result},approve_stu_id=#{operator},reply_time=NOW() WHERE apply_id=#{id} AND apply_status='pending'</update>
+  <select id="spJoin" statementType="CALLABLE">{CALL sp_submit_join_apply(#{clubId},#{stuId})}</select>
+  <select id="spRole" statementType="CALLABLE">{CALL sp_change_member_role(#{clubId},#{stuId},#{role},#{operator})}</select>
+  <select id="spSubmitDissolve" statementType="CALLABLE">{CALL sp_submit_dissolve_apply(#{clubId},#{stuId})}</select>
+  <select id="spCreate" statementType="CALLABLE">{CALL sp_create_club(#{id})}</select>
+  <select id="spDissolve" statementType="CALLABLE">{CALL sp_dissolve_club(#{id})}</select>
+  <select id="maxRoleLog" resultType="map">SELECT COALESCE(MAX(log_id),0) AS id FROM club_member_change_log WHERE club_id=#{clubId}</select>
+  <update id="roleLogOperator">UPDATE club_member_change_log SET operate_stu_id=#{operator} WHERE club_id=#{clubId} AND log_id&gt;#{afterId}</update>
+  <delete id="removeBridgeLog">DELETE FROM club_member_change_log WHERE log_id=#{id}</delete>
+  <update id="bridgeOldRole">UPDATE club_member_change_log SET old_role=#{role} WHERE club_id=#{clubId} AND stu_id=#{stuId} AND new_role='president' AND log_id&gt;#{afterId}</update>
+  <select id="activities" resultType="map">SELECT act_id,act_name,act_desc,act_start_time,act_end_time,act_place,act_status FROM club_activity WHERE club_id=#{clubId} AND act_status IN ('running','finish') ORDER BY act_start_time DESC,act_id DESC</select>
+  <select id="allActivities" resultType="map">SELECT a.act_id,a.act_name,a.act_desc,a.act_start_time,a.act_end_time,a.act_place,a.act_status,a.apply_time,t.tea_name AS audit_tea_name,a.audit_time FROM club_activity a LEFT JOIN teacher t ON t.tea_id=a.audit_tea_id WHERE a.club_id=#{clubId} ORDER BY a.act_start_time DESC,a.act_id DESC</select>
+  <select id="activity" resultType="map">SELECT a.*,c.tea_id FROM club_activity a JOIN club c ON c.club_id=a.club_id WHERE a.act_id=#{id}</select>
+  <insert id="addActivity">INSERT INTO club_activity(club_id,act_name,act_desc,act_start_time,act_end_time,act_place) VALUES(#{clubId},#{name},#{desc},#{start},#{end},#{place})</insert>
+  <update id="finishActivity">UPDATE club_activity SET act_status='finish' WHERE club_id=#{clubId} AND act_id=#{id} AND act_status='running'</update>
+  <select id="teacherActivities" resultType="map">SELECT a.*,c.club_name FROM club_activity a JOIN club c ON c.club_id=a.club_id WHERE c.tea_id=#{teaId} AND a.act_status='wait_audit' ORDER BY a.apply_time,a.act_id</select>
+  <update id="auditActivity">UPDATE club_activity SET act_status=#{status},audit_tea_id=#{teaId},audit_time=NOW() WHERE act_id=#{id} AND act_status='wait_audit'</update>
+  <select id="notices" resultType="map">SELECT n.*,s.stu_name AS publish_name FROM club_notice n JOIN student s ON s.stu_id=n.publish_stu_id WHERE n.club_id=#{clubId}<if test="!all"> AND n.is_deleted=0</if> ORDER BY n.publish_time DESC,n.notice_id DESC</select>
+  <insert id="addNotice">INSERT INTO club_notice(club_id,notice_title,notice_content,publish_stu_id) VALUES(#{clubId},#{title},#{content},#{operator})</insert>
+  <update id="editNotice">UPDATE club_notice SET notice_title=#{title},notice_content=#{content} WHERE notice_id=#{id} AND club_id=#{clubId} AND is_deleted=0</update>
+  <update id="deleteNotice">UPDATE club_notice SET is_deleted=1 WHERE notice_id=#{id} AND club_id=#{clubId} AND is_deleted=0</update>
+  <select id="messages" resultType="map">SELECT m.msg_id,m.publish_stu_id,s.stu_name AS publish_name,m.msg_title,m.msg_content,m.publish_time FROM system_message m JOIN student s ON s.stu_id=m.publish_stu_id WHERE m.is_deleted=0 ORDER BY m.publish_time DESC,m.msg_id DESC</select>
+  <insert id="addMessage">INSERT INTO system_message(msg_title,msg_content,publish_stu_id) VALUES(#{title},#{content},#{operator})</insert>
+  <update id="editMessage">UPDATE system_message SET msg_title=#{title},msg_content=#{content} WHERE msg_id=#{id} AND is_deleted=0</update>
+  <update id="deleteMessage">UPDATE system_message SET is_deleted=1 WHERE msg_id=#{id} AND is_deleted=0</update>
+  <select id="unionMember" resultType="map">SELECT * FROM student_union_member WHERE stu_id=#{stuId}</select>
+  <select id="unionMembers" resultType="map">SELECT u.stu_id,s.stu_name,u.join_time FROM student_union_member u JOIN student s ON s.stu_id=u.stu_id ORDER BY u.id</select>
+  <insert id="addUnion">INSERT INTO student_union_member(stu_id) VALUES(#{stuId})</insert>
+  <delete id="removeUnion">DELETE FROM student_union_member WHERE stu_id=#{stuId}</delete>
+  <insert id="unionLog">INSERT INTO student_union_operate_log(stu_id,operate_type,operate_stu_id) VALUES(#{stuId},#{type},#{operator})</insert>
+  <select id="unionLogs" resultType="map">SELECT l.*,s.stu_name,t.stu_name AS operate_name FROM student_union_operate_log l JOIN student s ON s.stu_id=l.stu_id JOIN student t ON t.stu_id=l.operate_stu_id ORDER BY l.log_id DESC</select>
+  <insert id="addCreate">INSERT INTO club_create_apply(club_name,club_desc,apply_tea_id) VALUES(#{name},#{desc},#{teaId})</insert>
+  <insert id="addInitiator">INSERT INTO club_create_apply_member(create_apply_id,stu_id) VALUES(#{id},#{stuId})</insert>
+  <select id="create" resultType="map">SELECT * FROM club_create_apply WHERE create_apply_id=#{id}</select>
+  <select id="initiators" resultType="map">SELECT m.stu_id,s.stu_name FROM club_create_apply_member m JOIN student s ON s.stu_id=m.stu_id WHERE m.create_apply_id=#{id} ORDER BY m.id</select>
+  <select id="creates" resultType="map">
+    SELECT a.*,t.tea_name AS apply_tea_name,s.stu_name AS union_audit_name,t.tea_name AS tea_audit_name
+    FROM club_create_apply a JOIN teacher t ON t.tea_id=a.apply_tea_id LEFT JOIN student s ON s.stu_id=a.union_audit_stu_id WHERE 1=1
+    <if test="scope == 'union'">AND a.union_audit_status='pending' AND a.final_status='pending'</if>
+    <if test="scope == 'teacher'">AND a.apply_tea_id=#{userId}</if>
+    <if test="scope == 'my'">AND EXISTS(SELECT 1 FROM club_create_apply_member m WHERE m.create_apply_id=a.create_apply_id AND m.stu_id=#{userId})</if>
+    ORDER BY a.apply_time DESC,a.create_apply_id DESC
+  </select>
+  <update id="unionAuditCreate">UPDATE club_create_apply SET union_audit_status=#{result},union_audit_stu_id=#{operator},union_audit_time=NOW(),final_status=#{finalStatus} WHERE create_apply_id=#{id} AND union_audit_status='pending' AND final_status='pending'</update>
+  <update id="teacherAuditCreate">UPDATE club_create_apply SET tea_audit_status=#{result},tea_audit_time=NOW(),final_status=#{finalStatus} WHERE create_apply_id=#{id} AND tea_audit_status='pending' AND final_status='pending'</update>
+  <update id="restoreCreate">UPDATE club_create_apply SET union_audit_status=#{unionAuditStatus},union_audit_stu_id=#{unionAuditStuId},union_audit_time=#{unionAuditTime},tea_audit_status=#{teaAuditStatus},tea_audit_time=#{teaAuditTime},final_status=#{finalStatus} WHERE create_apply_id=#{createApplyId} AND final_status='pending'</update>
+  <select id="dissolve" resultType="map">SELECT a.*,c.tea_id FROM club_dissolve_apply a JOIN club c ON c.club_id=a.club_id WHERE a.dissolve_apply_id=#{id}</select>
+  <select id="pendingDissolve" resultType="map">SELECT dissolve_apply_id FROM club_dissolve_apply WHERE club_id=#{clubId} AND final_status='pending'</select>
+  <select id="dissolves" resultType="map">
+    SELECT a.*,c.club_name,s.stu_name AS apply_stu_name FROM club_dissolve_apply a JOIN club c ON c.club_id=a.club_id JOIN student s ON s.stu_id=a.apply_stu_id WHERE 1=1
+    <if test="scope == 'union'">AND a.union_audit_status='pending' AND a.final_status='pending'</if>
+    <if test="scope == 'teacher'">AND c.tea_id=#{userId}</if>
+    <if test="scope == 'club'">AND a.club_id=#{clubId}</if>
+    ORDER BY a.apply_time DESC,a.dissolve_apply_id DESC
+  </select>
+  <update id="unionAuditDissolve">UPDATE club_dissolve_apply SET union_audit_status=#{result},union_audit_stu_id=#{operator},union_audit_time=NOW(),final_status=#{finalStatus} WHERE dissolve_apply_id=#{id} AND union_audit_status='pending' AND final_status='pending'</update>
+  <update id="teacherAuditDissolve">UPDATE club_dissolve_apply SET tea_audit_status=#{result},tea_audit_time=NOW(),final_status=#{finalStatus} WHERE dissolve_apply_id=#{id} AND tea_audit_status='pending' AND final_status='pending'</update>
+  <update id="dissolveSuccess">UPDATE club_dissolve_apply SET final_status='success' WHERE dissolve_apply_id=#{id} AND final_status='pending' AND union_audit_status='agree' AND tea_audit_status='agree'</update>
+  <update id="restoreDissolve">UPDATE club_dissolve_apply SET union_audit_status=#{unionAuditStatus},union_audit_stu_id=#{unionAuditStuId},union_audit_time=#{unionAuditTime},tea_audit_status=#{teaAuditStatus},tea_audit_time=#{teaAuditTime},final_status=#{finalStatus} WHERE dissolve_apply_id=#{dissolveApplyId}</update>
+</mapper>

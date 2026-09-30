@@ -1,4 +1,42 @@
-# 开发提示词
+# 青禾校园 · 高校学生社团管理系统
+
+项目已补全后端与15个前端页面，附可运行JAR、前端构建产物、演示数据和测试记录。原始开发提示词保留在本文后部。
+
+## 快速运行（Windows交付包）
+
+1. 确保Java17+、Node22.12+和MySQL已安装且服务运行。默认MySQL账号root、密码123456；可用DB_USER/DB_PASSWORD环境变量覆盖。
+2. 首次双击 `scripts/init-db.bat` 创建项目库（已有表时停止，不覆盖数据）。MySQL客户端不在默认位置时，设置MYSQL_BIN为mysql.exe完整路径。
+3. 双击 `scripts/import-demo.bat` 导入预置账号与篮球社。该步骤会清空club_manage中的现有业务数据，只用于首次演示或显式重置。
+4. 双击 `scripts/start-all.bat`，打开 **http://localhost:5173**。启动不安装依赖、不重置数据库，前后端进程隐藏运行，日志在logs目录。
+5. 双击 `scripts/stop-all.bat` 停止本脚本启动的进程。
+
+|身份|账号|密码|
+|---|---|---|
+|普通学生，入社演示|2021010|123456|
+|篮球社社长兼学生会|2021006|123456|
+|篮球社副社长|2021008|123456|
+|学生会审批人|2021007|123456|
+|篮球社指导教师|T003|123456|
+|空闲教师、建团审批|T001、T002|123456|
+|五人建团组|2021001～2021005|123456|
+
+## 开发与验证
+
+- 后端：项目根目录 `mvn spring-boot:run`（或mvnw.cmd），默认8080。
+- 前端：frontend目录 `npm ci`、`npm run dev`，默认5173，/api代理到后端。
+- 构建：`powershell -ExecutionPolicy Bypass -File scripts/build.ps1`，产物为release/club-manage.jar和frontend/dist。
+- 完整复验：安装前端依赖后，`cd frontend`执行`npx playwright install chromium`，回到根目录执行`node scripts/test-all.mjs`。要求Maven可用，仅重置独立club_manage_test；使用18081/15173端口。
+- 测试结果：[逐例结果](test/expected-results.md)、[演示剧本](test/demo-results.md)、[测试报告](docs/dev/09-测试报告.md)、[浏览器结果](test/ui-results.json)。
+
+## 必须了解的文档差异
+
+原测试55例中，第50例要求通过未包含审批状态字段的视图更新审批状态，无法在“不修改视图”的约束下原样完成。实际记录为54例通过、1例原要求受限且替代验证通过。换届权限和存储过程内部事务也存在原始约束冲突，已做应用层兼容并说明边界，详见[实现说明](docs/dev/08-实现说明与文档差异.md)。
+
+原始四个SQL设计文件保持不变；初始化脚本处理MySQL8的排序规则继承差异。请优先使用附带脚本初始化，避免直接导入遇到过程参数排序规则冲突。
+
+---
+
+# 原始开发提示词
 
 ## 文件清单
 

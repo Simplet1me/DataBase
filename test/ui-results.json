@@ -1,0 +1,34 @@
+{
+  "date": "2026-09-29T13:04:48.670Z",
+  "status": "通过",
+  "routes": [
+    "/login",
+    "/clubs",
+    "/me",
+    "/club/create",
+    "/messages",
+    "/manage/overview",
+    "/manage/members",
+    "/manage/audit",
+    "/manage/activities",
+    "/manage/notices",
+    "/manage/dissolve",
+    "/union/audit",
+    "/union/members",
+    "/union/messages",
+    "/teacher/workbench"
+  ],
+  "checks": [
+    "15页覆盖",
+    "学生表单登录",
+    "教师表单登录",
+    "社团详情",
+    "入社申请与审批",
+    "主动退社通过档案视图更新",
+    "系统消息新增编辑删除",
+    "越权路由重定向",
+    "390px响应式导航",
+    "无页面脚本异常与500"
+  ],
+  "errors": []
+}

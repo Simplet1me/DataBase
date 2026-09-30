@@ -10,11 +10,14 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.2",
+    "axios": "^1.20.0",
     "element-plus": "^2.14.6",
+    "pinia": "^4.0.3",
     "vue": "^3.5.42",
     "vue-router": "^5.3.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@vitejs/plugin-vue": "^6.0.8",
     "unplugin-auto-import": "^21.1.0",
     "unplugin-vue-components": "^32.1.0",
