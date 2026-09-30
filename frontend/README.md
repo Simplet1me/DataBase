@@ -1,4 +1,4 @@
-# 青禾校园前端
+# 高校学生社团管理系统前端
 
 Vue3 + Vue Router + Pinia + Axios + Element Plus + Vite，包含15个页面。依赖精确版本以package-lock.json为准。
 

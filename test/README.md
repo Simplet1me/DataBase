@@ -1,9 +1,5 @@
 # test 目录说明
 
-> 实现与验收已完成。复验入口：项目根目录 `node scripts/test-all.mjs`，仅重置独立测试库club_manage_test。
-
-## 已交付结果
-
 - expected-results.md / results.json：55个原用例与9个补充边界用例的实测记录。54个原例通过；第50例原要求受限，替代验证通过。
 - demo-flow.mjs / demo-results.md：12步骤端到端演示与实际结果。
 - ui-results.json / screenshots：15页真实浏览器检查、移动布局及界面截图；测试源码在frontend/test/ui.mjs。

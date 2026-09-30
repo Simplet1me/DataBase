@@ -35,6 +35,6 @@ router.beforeEach(async to => {
   try { await store.refresh() } catch { store.logout(); return '/login' }
   if (!allowed(to.meta.role, store)) return '/clubs'
 })
-router.afterEach(to => { document.title = `${to.meta.title || '社团'} · 青禾校园` })
+router.afterEach(to => { document.title = `${to.meta.title || '社团'} · 社团管理系统` })
 window.addEventListener('club-unauthorized', () => { useUser().logout(); router.replace('/login') })
 export default router

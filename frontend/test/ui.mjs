@@ -21,7 +21,7 @@ async function login(account, type = 'student') {
   if (type === 'teacher') await page.locator('.el-radio-button').filter({ hasText: '教师' }).click()
   await page.getByPlaceholder('请输入学号 / 工号').fill(account)
   await page.getByPlaceholder('请输入登录密码').fill('123456')
-  await page.getByRole('button', { name: '登录青禾' }).click()
+  await page.getByRole('button', { name: '登录' }).click()
   await page.waitForURL(url => url.hash === (type === 'teacher' ? '#/teacher/workbench' : '#/clubs'))
   await page.waitForLoadState('networkidle')
   checked.push(type === 'teacher' ? '/teacher/workbench' : '/clubs')
