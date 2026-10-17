@@ -1,15 +1,9 @@
-# 高校学生社团管理系统前端
+# 前端
 
-Vue3 + Vue Router + Pinia + Axios + Element Plus + Vite，包含15个页面。依赖精确版本以package-lock.json为准。
+Vue 3 + Element Plus + Pinia + Axios + Vite，使用 Element Plus 默认样式。
 
-```powershell
-npm ci
-npm run dev
-npm run build
-```
+首次执行 `npm ci` 安装依赖。在项目根目录运行 `demo\start.bat` 同时启动前后端；前端通过 `npm run dev` 运行于 5173，`/api` 代理至后端 8080。
 
-默认5173端口，/api代理到http://localhost:8080；可用API_TARGET覆盖代理。交付的dist也可由项目根目录scripts/serve-frontend.mjs托管，不需要安装前端依赖。
+单独开发前端可执行 `npm run dev`，需另行启动后端。`npm run build` 可检查前端构建；演示的 `demo\build.bat` 只编译后端。
 
-路由使用hash模式，静态托管可直接刷新任何页面。后端JWT登录态保存到本地，导航与窗口重新获得焦点时刷新复合身份；所有授权仍由后端Service实时判定。
-
-浏览器复验：项目根目录运行node scripts/test-all.mjs。测试代码在test/ui.mjs，要求已安装Playwright Chromium；支持PLAYWRIGHT_CHROMIUM_EXECUTABLE指定已有浏览器可执行文件。截图和结果写入项目根目录test。
+账号与操作步骤见 [测试手册](../demo/测试手册.md)。
