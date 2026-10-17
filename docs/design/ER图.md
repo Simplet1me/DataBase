@@ -1,11 +1,5 @@
 # 学生社团管理系统 — ER 图设计文档
 
-> 数据库：club_manage（MySQL 5.7 / 8.0） 表数量：14 张
-> 配套文件：[sql.sql](sql.sql)（表结构）、[triggers.sql](triggers.sql)（触发器）、[views.sql](views.sql)
-> （视图）、[procedures.sql](procedures.sql)（存储过程）
-> 需求依据：[需求文档.md](需求文档.md)
-> ER 图使用 Mermaid 绘制，VS Code 打开本文件后点击右上角"打开预览"即可直接渲染。
-
 ## 1 总 ER 图（全局视图）
 
 ```mermaid

@@ -17,8 +17,7 @@ onUnmounted(() => window.removeEventListener('focus', refresh))
 <template>
   <div class="app-shell">
     <aside class="sidebar" :class="{ 'is-open': mobile }">
-      <router-link to="/clubs" class="brand"><span
-          class="brand-symbol"></span><span>XX大学<small>学生社团管理系统</small></span></router-link>
+      <router-link to="/clubs" class="brand"><span>XX大学<small>学生社团管理系统</small></span></router-link>
       <nav aria-label="主导航">
         <section v-for="(items, group) in groups" :key="group" class="nav-group">
           <div class="nav-label">{{ group }}</div><router-link v-for="item in items" :key="item.path" :to="item.path"
