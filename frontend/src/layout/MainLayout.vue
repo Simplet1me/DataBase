@@ -3,6 +3,14 @@ import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { pages, allowed } from '../router'
 import { useUser } from '../stores/user'
+import { School, Grid, Bell, User, Plus, DataAnalysis, UserFilled, Checked, Calendar, Document, CircleClose, Stamp, Setting, ChatDotRound, Reading } from '@element-plus/icons-vue'
+const menuIcons = {
+  '/clubs': Grid, '/messages': Bell, '/me': User, '/club/create': Plus,
+  '/manage/overview': DataAnalysis, '/manage/members': UserFilled, '/manage/audit': Checked,
+  '/manage/activities': Calendar, '/manage/notices': Document, '/manage/dissolve': CircleClose,
+  '/union/audit': Stamp, '/union/members': Setting, '/union/messages': ChatDotRound,
+  '/teacher/workbench': Reading,
+}
 const route = useRoute(), router = useRouter(), store = useUser(), mobile = ref(false)
 const groups = computed(() => {
   const result = {}
@@ -17,10 +25,10 @@ onUnmounted(() => window.removeEventListener('focus', refresh))
 <template>
   <div class="app-shell">
     <aside class="sidebar" :class="{ 'is-open': mobile }">
-      <router-link to="/clubs" class="brand">XX大学 · 社团管理</router-link>
+      <router-link to="/clubs" class="brand"><el-icon class="brand-icon" aria-hidden="true"><School /></el-icon><span>XX大学 · 社团管理</span></router-link>
       <el-menu :default-active="route.path" router @select="mobile = false" aria-label="主导航">
         <el-menu-item-group v-for="(items, group) in groups" :key="group" :title="group">
-          <el-menu-item v-for="item in items" :key="item.path" :index="item.path">{{ item.title }}</el-menu-item>
+          <el-menu-item v-for="item in items" :key="item.path" :index="item.path"><el-icon aria-hidden="true"><component :is="menuIcons[item.path]" /></el-icon><span>{{ item.title }}</span></el-menu-item>
         </el-menu-item-group>
       </el-menu>
     </aside>
@@ -28,7 +36,7 @@ onUnmounted(() => window.removeEventListener('focus', refresh))
     <div class="main-shell">
       <header class="topbar">
         <div class="breadcrumb"><el-button class="mobile-toggle" aria-label="展开菜单" @click="mobile = !mobile">☰</el-button><span>{{ route.meta.title }}</span></div>
-        <div class="user-menu"><span>{{ store.user?.name }}</span><el-button text @click="logout">退出登录</el-button></div>
+        <div class="user-menu"><el-avatar :size="30" class="user-avatar" aria-hidden="true">{{ store.user?.name?.slice(-1) }}</el-avatar><span>{{ store.user?.name }}</span><el-button text @click="logout">退出登录</el-button></div>
       </header>
       <main class="workspace"><router-view :key="route.path + (store.clubId || '')" /></main>
     </div>

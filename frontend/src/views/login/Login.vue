@@ -3,6 +3,7 @@ import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useUser } from "../../stores/user";
 import { hashPassword } from "../../api/auth";
+import { School } from '@element-plus/icons-vue';
 const store = useUser(),
   router = useRouter(),
   form = ref(),
@@ -31,7 +32,7 @@ async function submit() {
 
     <section class="login-form-area">
       <div class="login-form">
-
+        <div class="login-mark" aria-hidden="true"><el-icon><School /></el-icon></div>
         <h2>高校学生社团管理系统</h2>
         <el-form ref="form" :model="data" :rules="rules" label-position="top" size="large"
           @submit.prevent="submit"><el-form-item label="登录身份"><el-radio-group v-model="data.userType"><el-radio-button
