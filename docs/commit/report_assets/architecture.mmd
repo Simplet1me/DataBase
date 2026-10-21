@@ -1,0 +1,17 @@
+flowchart TB
+  U["学生 / 管理层 / 学生会 / 指导教师"] --> V["Vue 3 + Element Plus
+菜单、表单、状态展示"]
+  V -->|"HTTP /api · JWT"| C["Spring Boot Controller
+参数校验与统一响应"]
+  C --> S["Service
+实时角色校验、状态判断、事务与命名锁"]
+  S --> M["MyBatis XML
+绑定参数 · CALLABLE"]
+  M --> T["14 张业务表
+主外键、唯一索引"]
+  M --> W["4 个视图
+查询与退社更新"]
+  M --> P["5 个存储过程
+入社、建团、换届、解散"]
+  T --> R["3 个触发器
+角色上限与审批入社联动"]

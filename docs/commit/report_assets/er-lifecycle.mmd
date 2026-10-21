@@ -1,0 +1,89 @@
+erDiagram
+    STUDENT {
+        varchar stu_id PK "学生学号"
+        varchar stu_name "学生姓名"
+    }
+    TEACHER {
+        varchar tea_id PK "教师工号"
+        varchar tea_name "教师姓名"
+    }
+    CLUB {
+        int club_id PK "社团编号"
+        varchar club_name UK "社团名称"
+        text club_desc "社团简介"
+        datetime club_create_time "创建时间"
+        varchar tea_id FK, UK "指导教师工号"
+    }
+    CLUB_MEMBER {
+        int member_id PK "社员id"
+        int club_id FK, UK "社团id"
+        varchar stu_id FK, UK "学生学号"
+        varchar member_role "president/vice_president/member"
+        datetime join_time "入社时间"
+        datetime leave_time "退社时间"
+        varchar leave_type "kick/quit"
+        varchar operate_stu_id FK "退社操作人"
+        tinyint is_active "在社标记(生成列)"
+    }
+    CLUB_MEMBER_CHANGE_LOG {
+        int log_id PK "日志id"
+        int club_id FK "社团id"
+        varchar stu_id FK "变更学生学号"
+        varchar old_role "变更前角色"
+        varchar new_role "变更后角色"
+        varchar operate_stu_id FK "操作人学号"
+        datetime change_time "变更时间"
+    }
+    JOIN_APPLY {
+        int apply_id PK "申请编号"
+        int club_id FK "申请社团id"
+        varchar stu_id FK "申请学生学号"
+        datetime apply_time "提交时间"
+        varchar apply_status "pending/agree/reject"
+        datetime reply_time "审批回复时间"
+        varchar approve_stu_id FK "审批人学号"
+    }
+    CLUB_CREATE_APPLY {
+        int create_apply_id PK "申请id"
+        varchar club_name "拟创建社团名称"
+        text club_desc "社团简介"
+        varchar apply_tea_id FK "指定指导教师"
+        datetime apply_time "提交时间"
+        varchar union_audit_status "学生会审批"
+        varchar union_audit_stu_id FK "学生会审批人"
+        datetime union_audit_time "学生会审批时间"
+        varchar tea_audit_status "教师审批"
+        datetime tea_audit_time "教师审批时间"
+        varchar final_status "pending/success/fail"
+    }
+    CLUB_CREATE_APPLY_MEMBER {
+        int id PK "主键"
+        int create_apply_id FK "创建申请id"
+        varchar stu_id FK "发起人学号"
+    }
+    CLUB_DISSOLVE_APPLY {
+        int dissolve_apply_id PK "解散申请id"
+        int club_id FK "待解散社团id"
+        varchar apply_stu_id FK "提交申请学生学号"
+        datetime apply_time "提交时间"
+        varchar union_audit_status "学生会审批"
+        varchar union_audit_stu_id FK "学生会审批人"
+        datetime union_audit_time "学生会审批时间"
+        varchar tea_audit_status "教师审批"
+        datetime tea_audit_time "教师审批时间"
+        varchar final_status "pending/success/fail"
+    }
+
+    TEACHER o|--o| CLUB : "指导"
+    CLUB ||--o{ CLUB_MEMBER : "拥有社员"
+    STUDENT ||--o{ CLUB_MEMBER : "入社/退社操作"
+    CLUB ||--o{ CLUB_MEMBER_CHANGE_LOG : "角色变更记录"
+    STUDENT ||--o{ CLUB_MEMBER_CHANGE_LOG : "变更对象/操作人"
+    CLUB ||--o{ JOIN_APPLY : "收到入社申请"
+    STUDENT ||--o{ JOIN_APPLY : "提交入社申请"
+    TEACHER ||--o{ CLUB_CREATE_APPLY : "被指定指导"
+    STUDENT o|--o{ CLUB_CREATE_APPLY : "学生会审批"
+    CLUB_CREATE_APPLY ||--o{ CLUB_CREATE_APPLY_MEMBER : "包含发起人"
+    STUDENT ||--o{ CLUB_CREATE_APPLY_MEMBER : "发起建团"
+    CLUB ||--o{ CLUB_DISSOLVE_APPLY : "被申请解散"
+    STUDENT ||--o{ CLUB_DISSOLVE_APPLY : "发起/学生会审批"

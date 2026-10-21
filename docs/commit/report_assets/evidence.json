@@ -1,0 +1,269 @@
+{
+  "date": "2026-10-21",
+  "database": "club_manage_report_20261021",
+  "tests": [
+    {
+      "id": "T01",
+      "name": "未登录不能读取业务数据",
+      "expected": 401,
+      "actual": 401,
+      "result": "通过"
+    },
+    {
+      "id": "T02",
+      "name": "伪造 JWT 被拒绝",
+      "expected": 401,
+      "actual": 401,
+      "result": "通过"
+    },
+    {
+      "id": "T03",
+      "name": "登录缺少必填参数",
+      "expected": 400,
+      "actual": 400,
+      "result": "通过"
+    },
+    {
+      "id": "T04",
+      "name": "错误密码不能登录",
+      "expected": 1001,
+      "actual": 1001,
+      "result": "通过"
+    },
+    {
+      "id": "T05",
+      "name": "注入式账号不能绕过认证",
+      "expected": 1001,
+      "actual": 1001,
+      "result": "通过"
+    },
+    {
+      "id": "T06",
+      "name": "普通社员读取全部活动",
+      "expected": 0,
+      "actual": 0,
+      "result": "通过"
+    },
+    {
+      "id": "T07",
+      "name": "普通社员读取有效公告",
+      "expected": 0,
+      "actual": 0,
+      "result": "通过"
+    },
+    {
+      "id": "T08",
+      "name": "普通社员不能发布公告",
+      "expected": 403,
+      "actual": 403,
+      "result": "通过"
+    },
+    {
+      "id": "T09",
+      "name": "未入社学生不能读取社内活动",
+      "expected": 403,
+      "actual": 403,
+      "result": "通过"
+    },
+    {
+      "id": "T10",
+      "name": "不能跨社团读取公告",
+      "expected": 403,
+      "actual": 403,
+      "result": "通过"
+    },
+    {
+      "id": "T11",
+      "name": "普通社员不能结束活动",
+      "expected": 403,
+      "actual": 403,
+      "result": "通过"
+    },
+    {
+      "id": "T12",
+      "name": "提交入社申请",
+      "expected": 0,
+      "actual": 0,
+      "result": "通过"
+    },
+    {
+      "id": "T13",
+      "name": "重复待审批申请被拒绝",
+      "expected": 1001,
+      "actual": 1001,
+      "result": "通过"
+    },
+    {
+      "id": "T14",
+      "name": "管理层申办活动",
+      "expected": 0,
+      "actual": 0,
+      "result": "通过"
+    },
+    {
+      "id": "T15",
+      "name": "五人提交建团申请",
+      "expected": 0,
+      "actual": 0,
+      "result": "通过"
+    },
+    {
+      "id": "T16",
+      "name": "普通社员活动页无申办按钮",
+      "expected": 0,
+      "actual": 0,
+      "result": "通过"
+    },
+    {
+      "id": "T17",
+      "name": "普通社员公告页无管理按钮",
+      "expected": 0,
+      "actual": 0,
+      "result": "通过"
+    },
+    {
+      "id": "T18",
+      "name": "管理层同意入社申请",
+      "expected": 0,
+      "actual": 0,
+      "result": "通过"
+    },
+    {
+      "id": "T19",
+      "name": "审批触发器自动写入一条社员记录",
+      "expected": "1",
+      "actual": "1",
+      "result": "通过"
+    },
+    {
+      "id": "T20",
+      "name": "重复审批被拒绝",
+      "expected": 404,
+      "actual": 404,
+      "result": "通过"
+    },
+    {
+      "id": "T21",
+      "name": "界面退社通过视图更新基表",
+      "expected": "1",
+      "actual": "1",
+      "result": "通过"
+    },
+    {
+      "id": "T22",
+      "name": "退社后原 JWT 立即失去社内读取权限",
+      "expected": 403,
+      "actual": 403,
+      "result": "通过"
+    },
+    {
+      "id": "T23",
+      "name": "指导教师同意活动",
+      "expected": 0,
+      "actual": 0,
+      "result": "通过"
+    },
+    {
+      "id": "T24",
+      "name": "学生会同意建团",
+      "expected": 0,
+      "actual": 0,
+      "result": "通过"
+    },
+    {
+      "id": "T25",
+      "name": "教师终审触发建团过程",
+      "expected": 0,
+      "actual": 0,
+      "result": "通过"
+    },
+    {
+      "id": "T26",
+      "name": "建团自动产生五名社员",
+      "expected": "5",
+      "actual": "5",
+      "result": "通过"
+    },
+    {
+      "id": "T27",
+      "name": "社团名称唯一",
+      "expected": "MySQL 1062",
+      "actual": "ERROR 1062 (23000) at line 1: Duplicate entry '篮球社' for key 'club.uk_club_name'",
+      "result": "通过"
+    },
+    {
+      "id": "T28",
+      "name": "教师唯一指导",
+      "expected": "MySQL 1062",
+      "actual": "ERROR 1062 (23000) at line 1: Duplicate entry 'T003' for key 'club.uk_tea_id'",
+      "result": "通过"
+    },
+    {
+      "id": "T29",
+      "name": "学生单社团唯一",
+      "expected": "MySQL 1062",
+      "actual": "ERROR 1062 (23000) at line 1: Duplicate entry '1-2021009-1' for key 'club_member.uk_club_stu'",
+      "result": "通过"
+    },
+    {
+      "id": "T30",
+      "name": "外键阻止不存在的教师",
+      "expected": "MySQL 1452",
+      "actual": "ERROR 1452 (23000) at line 1: Cannot add or update a child row: a foreign key constraint fails (`club_manage_report_20261021`.`club`, CONSTRAINT `club_ibfk_1` FOREIGN KEY (`tea_id`) REFERENCES `teacher` (`tea_id`) ON DELETE RESTRICT)",
+      "result": "通过"
+    },
+    {
+      "id": "T31",
+      "name": "触发器拒绝第二名社长",
+      "expected": "MySQL 1644",
+      "actual": "ERROR 1644 (45000) at line 1: 该社团已存在在职正社长，不可重复设置",
+      "result": "通过"
+    },
+    {
+      "id": "T32",
+      "name": "必填姓名不可为空",
+      "expected": "MySQL 1048",
+      "actual": "ERROR 1048 (23000) at line 1: Column 'stu_name' cannot be null",
+      "result": "通过"
+    },
+    {
+      "id": "T33",
+      "name": "学生密码均为64位且不等于明文",
+      "expected": "0",
+      "actual": "0",
+      "result": "通过"
+    },
+    {
+      "id": "T34",
+      "name": "浏览器未出现脚本异常",
+      "expected": 0,
+      "actual": 0,
+      "result": "通过"
+    }
+  ],
+  "screenshots": [
+    "ui-login.png",
+    "ui-clubs.png",
+    "ui-create.png",
+    "ui-manager.png",
+    "ui-join-audit.png",
+    "ui-activities-manage.png",
+    "ui-notices-manage.png",
+    "ui-union.png",
+    "ui-system-messages.png",
+    "ui-teacher.png",
+    "ui-member-activities.png",
+    "ui-member-notices.png",
+    "ui-view-before.png",
+    "ui-view-after.png"
+  ],
+  "facts": {
+    "mysqlVersion": "8.0.43",
+    "connectionAccount": "root@localhost",
+    "objects": "TABLE\t14\r\nVIEW\t4\r\nTRIGGER\t3\r\nPROCEDURE\t5",
+    "tables": "club\r\nclub_activity\r\nclub_create_apply\r\nclub_create_apply_member\r\nclub_dissolve_apply\r\nclub_member\r\nclub_member_change_log\r\nclub_notice\r\njoin_apply\r\nstudent\r\nstudent_union_member\r\nstudent_union_operate_log\r\nsystem_message\r\nteacher",
+    "views": "v_club_info\tNO\r\nv_club_member_detail\tYES\r\nv_join_apply_pending\tYES\r\nv_stu_club_record\tYES",
+    "viewBefore": "2021010\t篮球社\tmember\tNULL\tNULL",
+    "viewAfter": "2021010\t篮球社\tmember\t2026-10-21 15:51:19\tquit"
+  }
+}

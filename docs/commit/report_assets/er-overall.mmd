@@ -1,0 +1,64 @@
+erDiagram
+    STUDENT {
+        varchar stu_id PK "学生学号"
+    }
+    TEACHER {
+        varchar tea_id PK "教师工号"
+    }
+    STUDENT_UNION_MEMBER {
+        int id PK "主键"
+    }
+    STUDENT_UNION_OPERATE_LOG {
+        int log_id PK "日志id"
+    }
+    CLUB {
+        int club_id PK "社团编号"
+    }
+    CLUB_MEMBER {
+        int member_id PK "社员id"
+    }
+    CLUB_MEMBER_CHANGE_LOG {
+        int log_id PK "日志id"
+    }
+    JOIN_APPLY {
+        int apply_id PK "申请编号"
+    }
+    CLUB_CREATE_APPLY {
+        int create_apply_id PK "申请id"
+    }
+    CLUB_CREATE_APPLY_MEMBER {
+        int id PK "主键"
+    }
+    CLUB_DISSOLVE_APPLY {
+        int dissolve_apply_id PK "解散申请id"
+    }
+    CLUB_ACTIVITY {
+        int act_id PK "活动编号"
+    }
+    CLUB_NOTICE {
+        int notice_id PK "公告id"
+    }
+    SYSTEM_MESSAGE {
+        int msg_id PK "消息id"
+    }
+
+    STUDENT ||--o| STUDENT_UNION_MEMBER : "担任学生会成员"
+    STUDENT ||--o{ STUDENT_UNION_OPERATE_LOG : "被操作/操作人"
+    TEACHER o|--o| CLUB : "指导"
+    CLUB ||--o{ CLUB_MEMBER : "拥有社员"
+    STUDENT ||--o{ CLUB_MEMBER : "入社/退社操作"
+    CLUB ||--o{ CLUB_MEMBER_CHANGE_LOG : "角色变更记录"
+    STUDENT ||--o{ CLUB_MEMBER_CHANGE_LOG : "变更对象/操作人"
+    CLUB ||--o{ JOIN_APPLY : "收到入社申请"
+    STUDENT ||--o{ JOIN_APPLY : "提交入社申请"
+    TEACHER ||--o{ CLUB_CREATE_APPLY : "被指定指导"
+    STUDENT o|--o{ CLUB_CREATE_APPLY : "学生会审批"
+    CLUB_CREATE_APPLY ||--o{ CLUB_CREATE_APPLY_MEMBER : "包含发起人"
+    STUDENT ||--o{ CLUB_CREATE_APPLY_MEMBER : "发起建团"
+    CLUB ||--o{ CLUB_DISSOLVE_APPLY : "被申请解散"
+    STUDENT ||--o{ CLUB_DISSOLVE_APPLY : "发起/学生会审批"
+    CLUB ||--o{ CLUB_ACTIVITY : "举办活动"
+    TEACHER o|--o{ CLUB_ACTIVITY : "审批活动"
+    CLUB ||--o{ CLUB_NOTICE : "发布公告"
+    STUDENT ||--o{ CLUB_NOTICE : "公告发布人"
+    STUDENT ||--o{ SYSTEM_MESSAGE : "发布系统消息"

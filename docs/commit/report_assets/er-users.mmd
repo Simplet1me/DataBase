@@ -1,0 +1,30 @@
+erDiagram
+    STUDENT {
+        varchar stu_id PK "学生学号"
+        varchar stu_name "学生姓名"
+        char stu_gender "性别"
+        varchar stu_class "班级"
+        varchar stu_phone "联系电话"
+        varchar stu_pwd "密码(SHA256)"
+    }
+    TEACHER {
+        varchar tea_id PK "教师工号"
+        varchar tea_name "教师姓名"
+        varchar tea_phone "联系电话"
+        varchar tea_pwd "密码(SHA256)"
+    }
+    STUDENT_UNION_MEMBER {
+        int id PK "主键"
+        varchar stu_id FK, UK "成员学号"
+        datetime join_time "加入时间"
+    }
+    STUDENT_UNION_OPERATE_LOG {
+        int log_id PK "日志id"
+        varchar stu_id FK "操作对象学号"
+        varchar operate_type "add/remove"
+        varchar operate_stu_id FK "操作人学号"
+        datetime operate_time "操作时间"
+    }
+
+    STUDENT ||--o| STUDENT_UNION_MEMBER : "担任学生会成员"
+    STUDENT ||--o{ STUDENT_UNION_OPERATE_LOG : "被操作/操作人"

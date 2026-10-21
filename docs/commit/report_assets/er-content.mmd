@@ -1,0 +1,49 @@
+erDiagram
+    STUDENT {
+        varchar stu_id PK "学生学号"
+        varchar stu_name "学生姓名"
+    }
+    TEACHER {
+        varchar tea_id PK "教师工号"
+        varchar tea_name "教师姓名"
+    }
+    CLUB {
+        int club_id PK "社团编号"
+        varchar club_name UK "社团名称"
+    }
+    CLUB_ACTIVITY {
+        int act_id PK "活动编号"
+        int club_id FK "所属社团id"
+        varchar act_name "活动名称"
+        text act_desc "活动介绍"
+        datetime act_start_time "开始时间"
+        datetime act_end_time "结束时间"
+        varchar act_place "活动地点"
+        datetime apply_time "申办时间"
+        varchar act_status "wait_audit/running/finish/reject"
+        varchar audit_tea_id FK "审批教师工号"
+        datetime audit_time "审批时间"
+    }
+    CLUB_NOTICE {
+        int notice_id PK "公告id"
+        int club_id FK "社团id"
+        varchar notice_title "公告标题"
+        text notice_content "公告内容"
+        varchar publish_stu_id FK "发布人学号"
+        datetime publish_time "发布时间"
+        tinyint is_deleted "0正常1已删除"
+    }
+    SYSTEM_MESSAGE {
+        int msg_id PK "消息id"
+        varchar publish_stu_id FK "发布人学号(学生会成员)"
+        varchar msg_title "消息标题"
+        text msg_content "消息内容"
+        datetime publish_time "发布时间"
+        tinyint is_deleted "0正常1已删除"
+    }
+
+    CLUB ||--o{ CLUB_ACTIVITY : "举办活动"
+    TEACHER o|--o{ CLUB_ACTIVITY : "审批活动"
+    CLUB ||--o{ CLUB_NOTICE : "发布公告"
+    STUDENT ||--o{ CLUB_NOTICE : "公告发布人"
+    STUDENT ||--o{ SYSTEM_MESSAGE : "发布系统消息"
