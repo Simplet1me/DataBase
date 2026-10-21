@@ -6,6 +6,7 @@ import { useUser } from '../stores/user'
 import { School, Grid, Bell, User, Plus, DataAnalysis, UserFilled, Checked, Calendar, Document, CircleClose, Stamp, Setting, ChatDotRound, Reading } from '@element-plus/icons-vue'
 const menuIcons = {
   '/clubs': Grid, '/messages': Bell, '/me': User, '/club/create': Plus,
+  '/club/activities': Calendar, '/club/notices': Document,
   '/manage/overview': DataAnalysis, '/manage/members': UserFilled, '/manage/audit': Checked,
   '/manage/activities': Calendar, '/manage/notices': Document, '/manage/dissolve': CircleClose,
   '/union/audit': Stamp, '/union/members': Setting, '/union/messages': ChatDotRound,

@@ -6,6 +6,8 @@ export const pages = [
   { path: '/messages', title: '消息中心', group: '校园', component: () => import('../views/common/Messages.vue') },
   { path: '/me', title: '个人中心', group: '我的', role: 'student', component: () => import('../views/student/Me.vue') },
   { path: '/club/create', title: '发起建团', group: '我的', role: 'student', component: () => import('../views/student/Create.vue') },
+  { path: '/club/activities', title: '查看活动', group: '我的社团', role: 'member', component: () => import('../views/manage/Activities.vue'), props: { readonly: true } },
+  { path: '/club/notices', title: '社团公告', group: '我的社团', role: 'member', component: () => import('../views/manage/Notices.vue'), props: { readonly: true } },
   { path: '/manage/overview', title: '社团总览', group: '社团管理', role: 'manager', component: () => import('../views/manage/Overview.vue') },
   { path: '/manage/members', title: '社员管理', group: '社团管理', role: 'manager', component: () => import('../views/manage/Members.vue') },
   { path: '/manage/audit', title: '入社审批', group: '社团管理', role: 'manager', component: () => import('../views/manage/Audit.vue') },
@@ -20,12 +22,13 @@ export const pages = [
 export function allowed(role, store) {
   if (!role) return true
   if (role === 'manager') return store.manager
+  if (role === 'member') return store.user?.userType === 'student' && store.user?.club?.clubRole === 'member'
   if (role === 'union') return store.user?.unionMember
   return store.user?.userType === role
 }
 const router = createRouter({ history: createWebHashHistory(), routes: [
   { path: '/login', component: () => import('../views/login/Login.vue'), meta: { title: '登录' } },
-  { path: '/', component: MainLayout, redirect: '/clubs', children: pages.map(p => ({ path: p.path, component: p.component, meta: { title: p.title, role: p.role } })) },
+  { path: '/', component: MainLayout, redirect: '/clubs', children: pages.map(p => ({ path: p.path, component: p.component, props: p.props, meta: { title: p.title, role: p.role } })) },
   { path: '/:pathMatch(.*)*', redirect: '/clubs' },
 ] })
 router.beforeEach(async to => {

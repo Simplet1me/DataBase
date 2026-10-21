@@ -113,7 +113,7 @@ public class ClubService {
         catch(DuplicateKeyException e) { throw new BizException(1002,"该学生已加入其他社团，审批已回滚"); }
     }
     public Object activities(long clubId,boolean all) {
-        if(all) access.manager(clubId); else access.member(clubId);
+        access.member(clubId);
         return db.list(all?"allActivities":"activities","clubId",clubId);
     }
     public Object addActivity(long clubId,ActivityReq req) {
@@ -130,7 +130,11 @@ public class ClubService {
     public void finish(long clubId,long id) {
         db.writeLock(); access.manager(clubId); db.changed(db.update("finishActivity","clubId",clubId,"id",id));
     }
-    public Object notices(long clubId) { access.manager(clubId); return db.list("notices","clubId",clubId,"all",true); }
+    /** 普通社员查看有效公告，管理层同时查看已删除公告。 */
+    public Object notices(long clubId) {
+        var member = access.member(clubId);
+        return db.list("notices","clubId",clubId,"all",!"member".equals(member.get("memberRole")));
+    }
     public Object notice(long clubId,Long id,NoticeReq req) {
         db.writeLock(); access.manager(clubId);
         if(id==null) return Map.of("noticeId",db.insert("addNotice","clubId",clubId,"title",req.noticeTitle(),"content",req.noticeContent(),"operator",access.id()));
